@@ -1,7 +1,11 @@
 {
   "name": "hardhat-project",
+  "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "hardhat": "^2.22.12"
+  },
+  "scripts": {
+    "contract:deploy": "hardhat ignition deploy ./ignition/modules/BetCandidate.js --network localhost"
   }
 }
