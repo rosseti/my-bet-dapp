@@ -1,38 +1,5 @@
 export const contractABI = [
     {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "candidate",
-                "type": "uint256"
-            }
-        ],
-        "name": "bet",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "claim",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "winner",
-                "type": "uint256"
-            }
-        ],
-        "name": "finish",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
         "inputs": [],
         "stateMutability": "nonpayable",
         "type": "constructor"
@@ -69,6 +36,26 @@ export const contractABI = [
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "candidate",
+                "type": "uint256"
+            }
+        ],
+        "name": "bet",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "claim",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -112,6 +99,19 @@ export const contractABI = [
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "winner",
+                "type": "uint256"
+            }
+        ],
+        "name": "finish",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
