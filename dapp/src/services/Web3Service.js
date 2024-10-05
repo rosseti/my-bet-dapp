@@ -35,9 +35,7 @@ export const getDispute = async () => {
 export const placeBet = async (candidate, amountInEth) => {
     const contract = getContract();
     return contract.methods.bet(candidate, amountInEth).send({
-        value: Web3.utils.toWei(amountInEth, 'ether'),
-        // gas: 116055,
-        // gasPrice: "29100000015"
+        value: Web3.utils.toWei(amountInEth, 'ether')
     });
 }
 
