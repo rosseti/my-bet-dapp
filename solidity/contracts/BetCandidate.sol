@@ -13,7 +13,7 @@ Desafios:
 * funções administrativas para permitir trocar foto e nome dos candidatos.
 */
 
-struct Dispute 
+struct Dispute
 {
     string candidate1;
     string candidate2;
@@ -33,7 +33,7 @@ struct Bet
 }
 
 contract BetCandidate {
-    
+
     Dispute public dispute;
     mapping(address => Bet) public allBets;
 
@@ -77,8 +77,7 @@ contract BetCandidate {
         }
     }
 
-    function finish(uint winner) external {
-        require(msg.sender == owner, "Not owner");
+    function finish(uint winner) external onlyOwner {
         require(winner == 1 || winner == 2, "Invalid candidate");
         require(dispute.winner == 0, "Dispute closed");
 
@@ -102,5 +101,14 @@ contract BetCandidate {
 
         allBets[msg.sender].claimed = individualPrize;
         payable(msg.sender).transfer(individualPrize);
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
+
+    function isOwner() external view returns (bool) {
+        return (msg.sender == owner);
     }
 }

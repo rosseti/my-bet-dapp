@@ -2,42 +2,32 @@
 
 import Image from "next/image";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation'
 import { BrowserProvider } from "ethers";
 
-import { useAuth } from './context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
+import { doLogin } from '@/services/Web3Service';
+
 
 export default function Home() {
   const { push } = useRouter();
   const { login } = useAuth();
+  const [message, setMessage] = useState();
 
-  const connectWallet = async () => {
-    if (window.ethereum) {
-      try {
-        const provider = new BrowserProvider(window.ethereum);
-        const accounts = await provider.send("eth_requestAccounts", []);
+  const connectWallet = () => {
+    setMessage("Conectando ao MetaMask...");
 
-        login(accounts[0]);
-
-        console.log('Conectado à conta:', accounts[0]);
+    doLogin()
+      .then((account) => {
+        login(account);
         push('/bet');
-      } catch (error) {
-        console.error("Erro ao conectar com MetaMask:", error);
-      }
-    } else {
-      alert('MetaMask não está instalada!');
-    }
-  };
-
-  useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on('accountsChanged', (accounts) => {
-        login(accounts[0]);
-        console.log('Conta mudou para:', accounts[0]);
+      })
+      .catch(err => {
+        console.error(err);
+        setMessage(err.message);
       });
-    }
-  }, []);
+  };
 
   return (
     <>
@@ -56,6 +46,8 @@ export default function Home() {
               <Image src="/metamask.svg" alt="MetaMask" width={25} height={25} />
               Conectar com Metamask
             </button>
+
+            <p className="text-red-500">{message}</p>
           </div>
           <div className="p-4">
             <div className="w-100 h-52 overflow-hidden rounded-lg">

@@ -1,7 +1,7 @@
 "use client";
 
 import localFont from "next/font/local";
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
@@ -18,12 +18,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-// export const metadata = {
-//   title: "BetCandidate",
-//   description: "Apostas on-chain nas eleições americanas",
-// };
-
-export default function RootLayout({ children }) 
+export default function RootLayout({ children })
 {
   const router = useRouter();
 
@@ -32,7 +27,7 @@ export default function RootLayout({ children })
       router.push('/');
     }
   }, [router]);
-  
+
   return (
     <AuthProvider>
       <html lang="en">
