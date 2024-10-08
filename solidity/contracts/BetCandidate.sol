@@ -22,6 +22,8 @@ struct Dispute
     uint total1;
     uint total2;
     uint winner;
+    uint votes1;
+    uint votes2;
 }
 
 struct Bet
@@ -51,7 +53,9 @@ contract BetCandidate {
             image2: "https://www.whitehouse.gov/wp-content/uploads/2021/04/V20210305LJ-0043.jpg",
             total1: 0,
             total2: 0,
-            winner: 0
+            winner: 0,
+            votes1: 0,
+            votes2: 0
         });
     }
 
@@ -72,8 +76,10 @@ contract BetCandidate {
 
         if (candidate == 1) {
             dispute.total1 += msg.value;
+            dispute.votes1 += 1;
         } else {
             dispute.total2 += msg.value;
+            dispute.votes2 += 1;
         }
     }
 

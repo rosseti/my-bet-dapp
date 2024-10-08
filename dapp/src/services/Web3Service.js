@@ -32,24 +32,34 @@ export const getDispute = async () => {
     return contract.methods.dispute().call();
 }
 
-export const placeBet = async (candidate, amountInEth) => {
+export const placeBet = async (candidateId, amountInEther) => {
     const contract = getContract();
-    return contract.methods.bet(candidate, amountInEth).send({
-        value: Web3.utils.toWei(amountInEth, 'ether')
+    const amountInWei = Web3.utils.toWei(amountInEther, 'ether');
+
+    await contract.methods.bet(candidateId, amountInWei).call({
+        value: amountInWei,
+    });
+
+    return await contract.methods.bet(candidateId, amountInWei).send({
+        value: amountInWei,
     });
 }
 
 export const finishDispute = async (winner) => {
     const contract = getContract();
-    return contract.methods.finish(winner).send();
+
+    await contract.methods.finish(winner).call();
+
+    return await contract.methods.finish(winner).send();
 }
 
 export const claimPrize = async () => {
     const contract = getContract();
-    return contract.methods.claim().send();
+    await contract.methods.claim().call();
+    return await contract.methods.claim().send();
 }
 
-export const isAdmin = async () => {
+export const isOwner = async () => {
     const contract = getContract();
     return contract.methods.isOwner().call();
 }

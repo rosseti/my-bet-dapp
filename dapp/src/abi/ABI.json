@@ -96,6 +96,16 @@
 				"internalType": "uint256",
 				"name": "winner",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "votes1",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "votes2",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",

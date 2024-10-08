@@ -2,13 +2,11 @@
 
 import Image from "next/image";
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation'
-import { BrowserProvider } from "ethers";
 
 import { useAuth } from '@/context/AuthContext';
 import { doLogin } from '@/services/Web3Service';
-
 
 export default function Home() {
   const { push } = useRouter();

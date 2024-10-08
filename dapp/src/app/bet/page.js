@@ -1,49 +1,50 @@
 "use client";
 
-import Image from "next/image";
 import React, { useState, useEffect } from 'react';
 
-import { useRouter } from 'next/navigation'
+import VoteProgressBar from '@/components/VoteProgressBar';
+
 import { useAuth } from '@/context/AuthContext';
 
-import { claimPrize, getDispute, placeBet, isAdmin, finishDispute } from "@/services/Web3Service";
+import { claimPrize, getDispute, placeBet, isOwner, finishDispute } from "@/services/Web3Service";
 
 import Web3 from "web3";
 
 export default function PageBet() {
     const { user } = useAuth();
 
-    const { push } = useRouter();
-
     const [candidates, setCandidates] = useState([]);
 
     const [message, setMessage] = useState();
     const [winner, setWinner] = useState(0);
-    const [admin, setAdmin] = useState(false);
+    const [isAdmin, setAdmin] = useState(false);
+    const [totalVotes, setTotalVotes] = useState(0);
+
 
     const fetchCandidates = () => {
         setMessage("Obtendo dados da disputa");
         getDispute()
             .then((dispute) => {
-                const { candidate1, candidate2, image1, image2, total1, total2, winner } = dispute;
+                const { candidate1, candidate2, image1, image2, total1, total2, winner, votes1, votes2 } = dispute;
 
                 setWinner(winner);
+                setTotalVotes(votes1 + votes2);
 
                 setCandidates([
-                    { id: 1, name: candidate1, image: image1, amount: total1 },
-                    { id: 2, name: candidate2, image: image2, amount: total2 }
+                    { id: 1, name: candidate1, image: image1, amount: total1, totalVotes: votes1 },
+                    { id: 2, name: candidate2, image: image2, amount: total2, totalVotes: votes2 },
                 ]);
                 setMessage("");
             })
             .catch((error) => {
-                setMessage(error.message);
+                setMessage(error.data.message);
             });
     };
 
     useEffect(() => {
         fetchCandidates();
 
-        isAdmin().then((isAdmin) => {
+        isOwner().then((isAdmin) => {
             setAdmin(isAdmin);
         });
     }, []);
@@ -62,8 +63,8 @@ export default function PageBet() {
                 setMessage("");
             })
             .catch((error) => {
-                setMessage(error.message);
-                console.error(error.message);
+                setMessage(error.data.message);
+                console.error(error.data.message);
             })
             .finally(() => {
                 candidate.loading = false;
@@ -81,9 +82,8 @@ export default function PageBet() {
                 setMessage("");
             })
             .catch((error) => {
-                console.log(error);
-                setMessage(error.message);
-                console.error(error.message);
+                setMessage(error.data.message);
+                console.error(error.data.message);
             })
             .finally(() => {
                 candidate.loading = false;
@@ -102,9 +102,9 @@ export default function PageBet() {
                 setMessage("");
             })
             .catch((error) => {
-                setMessage(error.message);
-                console.error(error.message);
-            });
+                setMessage(error.data.message);
+                console.error(error.data.message);
+            })
     };
 
     return (
@@ -132,8 +132,9 @@ export default function PageBet() {
                     )
                 }
 
+                { /* Winner Block */}
                 {
-                    winner == 0 && admin && (
+                    winner == 0 && isAdmin && (
                         <>
                             <button onClick={() => finishDisputeHandler()} className="btn btn-neutral">
                                 Finalizar disputa
@@ -142,6 +143,10 @@ export default function PageBet() {
                     )
                 }
 
+                {candidates.length > 0
+                    && totalVotes > 0
+                    && (<VoteProgressBar candidates={candidates} totalVotes={totalVotes} />)
+                }
 
                 <div className="grid grid-cols-2 gap-4 items-center justify-center">
                     {candidates.filter(candidate => winner == 0 || winner == candidate.id).map((candidate, index) => (
@@ -168,10 +173,10 @@ export default function PageBet() {
                                                     Apostar
                                                 </button>
                                             ) :
-                                            <button onClick={() => claimClickHandler(candidate)} className="btn btn-primary btn-block">
-                                                {candidate.loading ? <span className="loading loading-spinner loading-xs"></span> : ''}
-                                                Resgatar prêmio
-                                            </button>
+                                                <button onClick={() => claimClickHandler(candidate)} className="btn btn-primary btn-block">
+                                                    {candidate.loading ? <span className="loading loading-spinner loading-xs"></span> : ''}
+                                                    Resgatar prêmio
+                                                </button>
                                         }
 
 
