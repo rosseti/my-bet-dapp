@@ -1,17 +1,23 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import VoteProgressBar from '@/components/VoteProgressBar';
 
-import { useAuth } from '@/context/AuthContext';
+import { AppContext } from '@/context/AppContext';
 
 import { claimPrize, getDispute, placeBet, isOwner, finishDispute } from "@/services/Web3Service";
 
+import { toUtf8 } from '@/utils/StringUtils';
+
 import Web3 from "web3";
 
+import { useRouter } from 'next/navigation'
+
 export default function PageBet() {
-    const { user } = useAuth();
+    const { account } = useContext(AppContext);
+
+    const { push } = useRouter();
 
     const [candidates, setCandidates] = useState([]);
 
@@ -19,7 +25,6 @@ export default function PageBet() {
     const [winner, setWinner] = useState(0);
     const [isAdmin, setAdmin] = useState(false);
     const [totalVotes, setTotalVotes] = useState(0);
-
 
     const fetchCandidates = () => {
         setMessage("Obtendo dados da disputa");
@@ -31,18 +36,24 @@ export default function PageBet() {
                 setTotalVotes(votes1 + votes2);
 
                 setCandidates([
-                    { id: 1, name: candidate1, image: image1, amount: total1, totalVotes: votes1 },
-                    { id: 2, name: candidate2, image: image2, amount: total2, totalVotes: votes2 },
+                    { id: 1, name: toUtf8(candidate1), image: toUtf8(image1), amount: total1, totalVotes: votes1 },
+                    { id: 2, name: toUtf8(candidate2), image: toUtf8(image2), amount: total2, totalVotes: votes2 },
                 ]);
                 setMessage("");
             })
             .catch((error) => {
-                setMessage(error.data.message);
+                const message = error.data && error.data.message ? error.data.message : error.message;
+                setMessage(message);
+                console.error(error);
             });
     };
 
     useEffect(() => {
         fetchCandidates();
+
+        if (!account) {
+            push('/');
+        }
 
         isOwner().then((isAdmin) => {
             setAdmin(isAdmin);
@@ -63,8 +74,9 @@ export default function PageBet() {
                 setMessage("");
             })
             .catch((error) => {
-                setMessage(error.data.message);
-                console.error(error.data.message);
+                const message = error.data && error.data.message ? error.data.message : error.message;
+                setMessage(message);
+                console.error(error);
             })
             .finally(() => {
                 candidate.loading = false;
@@ -82,8 +94,9 @@ export default function PageBet() {
                 setMessage("");
             })
             .catch((error) => {
-                setMessage(error.data.message);
-                console.error(error.data.message);
+                const message = error.data && error.data.message ? error.data.message : error.message;
+                setMessage(message);
+                console.error(error);
             })
             .finally(() => {
                 candidate.loading = false;
@@ -102,21 +115,20 @@ export default function PageBet() {
                 setMessage("");
             })
             .catch((error) => {
-                setMessage(error.data.message);
-                console.error(error.data.message);
+                const message = error.data && error.data.message ? error.data.message : error.message;
+                setMessage(message);
+                console.error(error);
             })
     };
 
     return (
         <>
-            <div className="container mx-auto py-20 px-4 w-1/2">
+            <div className="container mx-auto pt-10 px-4 w-1/2">
 
                 <h1 className="text-4xl font-bold pb-4">
-                    BetCandidate <span className="badge bg-yellow-100 text-yellow-800 text-xs font-medium">beta</span>
-                    <span className="ml-4 badge font-normal badge-primary">{user}</span>
+                    Apostas on-chain
+                    <span className="text-sm font-normal"> nas eleições americanas</span>
                 </h1>
-
-                <p>Apostas on-chain nas eleições americanas</p>
 
                 {
                     winner == 0 ? (
@@ -180,7 +192,7 @@ export default function PageBet() {
                                         }
 
 
-                                        <div className="ml-4 w-100 badge font-normal badge-ghost">{Web3.utils.fromWei(candidate.amount, "ether") || '0'} ETH apostado</div>
+                                        <div className="ml-4 w-100 badge font-normal badge-ghost">{Web3.utils.fromWei(candidate.amount, "ether") || '0'} {process.env.NEXT_PUBLIC_TOKEN} apostado</div>
                                     </div>
                                 </div>
                             </div>

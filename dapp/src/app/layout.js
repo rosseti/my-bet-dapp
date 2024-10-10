@@ -1,9 +1,11 @@
 "use client";
 
 import localFont from "next/font/local";
-import { AuthProvider } from '@/context/AuthContext';
+import { AppProvider } from '@/context/AppContext';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 import "./globals.css";
 
@@ -29,7 +31,7 @@ export default function RootLayout({ children })
   }, [router]);
 
   return (
-    <AuthProvider>
+    <AppProvider>
       <html lang="en">
         <head>
           <title>BetCandidate ;)</title>
@@ -37,14 +39,13 @@ export default function RootLayout({ children })
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {children}
-          <footer className="container mx-auto py-20 px-4 w-1/2">
-            <div className="items-center text-center">
-              <p className="text-sm">&copy; 2024 BetCandidate. All rights reserved.</p>
-            </div>
-          </footer>
+            <Header />
+            {children}
+
+            <Footer />
+
         </body>
       </html>
-    </AuthProvider>
+    </AppProvider>
   );
 }

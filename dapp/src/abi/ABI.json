@@ -1,5 +1,38 @@
 [
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "candidate",
+				"type": "uint256"
+			}
+		],
+		"name": "bet",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "claim",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "winner",
+				"type": "uint256"
+			}
+		],
+		"name": "finish",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
@@ -39,48 +72,28 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "candidate",
-				"type": "uint256"
-			}
-		],
-		"name": "bet",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "claim",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "dispute",
 		"outputs": [
 			{
-				"internalType": "string",
+				"internalType": "bytes32",
 				"name": "candidate1",
-				"type": "string"
+				"type": "bytes32"
 			},
 			{
-				"internalType": "string",
+				"internalType": "bytes32",
 				"name": "candidate2",
-				"type": "string"
+				"type": "bytes32"
 			},
 			{
-				"internalType": "string",
+				"internalType": "bytes32",
 				"name": "image1",
-				"type": "string"
+				"type": "bytes32"
 			},
 			{
-				"internalType": "string",
+				"internalType": "bytes32",
 				"name": "image2",
-				"type": "string"
+				"type": "bytes32"
 			},
 			{
 				"internalType": "uint256",
@@ -109,19 +122,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "winner",
-				"type": "uint256"
-			}
-		],
-		"name": "finish",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
