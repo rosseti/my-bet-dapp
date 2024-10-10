@@ -1,24 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.27;
 
-/*
-Desafios:
-
-* não permitir apostar depois de uma data x;
-* não sacar comissão no finish, mas sim em uma função separada;
-* não permitir mais de uma aposta por pessoa;
-* somente permitir finalizar depois de uma data x;
-* estudar constant, immutable e decidir onde usar nas variáveis do contrato;
-* contabilizar total de apostadores em cada candidato;
-* funções administrativas para permitir trocar foto e nome dos candidatos.
-*/
-
 struct Dispute
 {
-    string candidate1;
-    string candidate2;
-    string image1;
-    string image2;
+    bytes32 candidate1;
+    bytes32 candidate2;
+    bytes32 image1;
+    bytes32 image2;
     uint total1;
     uint total2;
     uint winner;
@@ -47,10 +35,10 @@ contract BetCandidate {
     {
         owner = msg.sender;
         dispute = Dispute({
-            candidate1: "Donald Trump",
-            candidate2: "Kamala Harris",
-            image1: "https://images.unsplash.com/photo-1580128660010-fd027e1e587a?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9uYWxkJTIwdHJ1bXB8ZW58MHx8MHx8fDA%3D",
-            image2: "https://www.whitehouse.gov/wp-content/uploads/2021/04/V20210305LJ-0043.jpg",
+            candidate1: "D. Trump",
+            candidate2: "K. Harris",
+            image1: "https://bit.ly/3Bz5vRE",
+            image2: "https://bit.ly/3NiPUbz",
             total1: 0,
             total2: 0,
             winner: 0,
